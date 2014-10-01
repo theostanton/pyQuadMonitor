@@ -1,30 +1,56 @@
-import numpy
 import pygame
 from pygame import gfxdraw
+
+import Dropdown
+from Element import Element
 from colors import *
+import Data
+
+
 gfx = pygame.gfxdraw
-draw = pygame.gfxdraw
-from collections import defaultdict
+draw = pygame.draw
 
 pygame.init()
-font = pygame.font.Font(None, 20, bold=False)
+font = pygame.font.Font(None, 20)
 
-class Graph():
 
-    def __init__(self, x,y,w,h, axisid, angleids, label):
+class Graph(Element):
+    def __init__(self, surface, axisid, angleids, label):
+        super(Graph, self).__init__(surface, label)
         self.axisid = axisid
         self.angleids = angleids
-        self.label = label
-        pad = 10
 
-        self.x = x + pad
-        self.y = y + pad
+        self.interactives.append(Dropdown.DropDown(10, 10, 60, 25, surface, 'Axis', ('Roll', 'Pitch', 'Yaw')))
+
+    def resize(self, x=None, y=None, w=None, h=None):
+        super(Graph, self).resize(x, y, w, h)
         self.cy = y + h/2
-        self.w = w - 2*pad
-        self.h = h - 2*pad
-        self.rect = pygame.Rect( self.x, self.y, self.w, self.h )
 
-    def draw(self, surface, logs):
+    def press(self, pos):
+
+        for interactive in self.interactives:
+            if interactive.press(pos):
+                self.set_axisid(interactive.get_choice(pos))
+                print 'axisid set to', self.axisid
+
+    def set_axisid(self, label):
+        self.label = label
+        if label in 'Roll':
+            self.axisid = 0
+        elif label in 'Pitch':
+            self.axisid = 1
+        else:
+            self.axisid = 2
+
+    def draw(self):
+
+        if not self.set:
+            return
+
+        super(Graph, self).draw()
+
+        x_scale = self.h / 2
+        x_scale /= 45.
 
         for angleid in self.angleids:
 
@@ -32,19 +58,22 @@ class Graph():
             y = self.cy
 
             points = []
-            points.append( (x,y) )
-            for val in reversed( logs[angleid] ):
-
-                points.append( ( x, y + val[self.axisid] ) )
-                x += 1
-
-                if x >= self.x + self.w:
+            for val in reversed(Data.angle_log[angleid]):
+                x += 2
+                y = val[self.axisid] * x_scale
+                points.append((x, self.cy + y))
+                if x > self.x + self.w:
                     break
+            points.append((self.x + self.w, self.cy))
 
-            points.append( (x-1,y) )
 
-            if len(points) > 2:
-                draw.aapolygon( surface, points, colors[angleid] )
+            # # aalines(Surface, color, closed, pointlist, blend=1) -> Rect
 
-        gfx.hline( surface, self.x, self.x+self.w-1, self.cy, white )
-        gfx.rectangle( surface, self.rect, white )
+            try:
+                if len(points) > 2:
+                    pygame.draw.aalines(self.surface, colors[angleid], False, points)
+            except Exception as e:
+                print 'error..', e.message
+
+        gfx.hline(self.surface, self.x, self.x + self.w - 1, self.cy, white)
+        gfx.rectangle(self.surface, self.rect, white)

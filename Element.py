@@ -2,7 +2,6 @@ import pygame
 from pygame import gfxdraw
 
 from colors import *
-import Dropdown
 
 
 gfx = pygame.gfxdraw
@@ -18,6 +17,7 @@ DRAG = 2
 
 
 class Element(object):
+
     def __init__(self, surface, label=None):
 
         self.set = False
@@ -40,7 +40,7 @@ class Element(object):
         self.pad = 10
 
         self.interactives = []
-        self.interactives.append(Dropdown.DropDown(10, 10, 60, 25, surface, 'Label', ('One', 'Two', 'Three', 'Four')))
+        # self.interactives.append(Dropdown.DropDown(10, 10, 60, 25, surface, 'Label', ('One', 'Two', 'Three', 'Four')))
 
     def resize(self, x=None, y=None, w=None, h=None):
 
@@ -74,8 +74,8 @@ class Element(object):
         if not self.set:
             return
 
-            # for interactive in self.interactives:
-            # interactive.draw()
+        for interactive in self.interactives:
+            interactive.draw()
 
         # gfx.box( self.surface, self.rect, self.fill[self.state] )
         # gfx.rectangle( self.surface, self.rect, self.border[self.state] )
@@ -95,7 +95,8 @@ class Element(object):
     def press(self, pos):
 
         for interactive in self.interactives:
-            interactive.press(pos)
+            if interactive.press(pos):
+                print interactive.get_choice(pos)
 
     def move_over(self, pos, rel):
         pass

@@ -1,49 +1,50 @@
-from colors import *
 import pygame
+from pygame import gfxdraw
+
+from colors import *
+from Element import Element
+import Data
+
+
 gfx = pygame.gfxdraw
+draw = pygame.gfxdraw
+
 pygame.init()
-font = pygame.font.Font(None, 20, bold=False)
+font = pygame.font.Font(None, 20)
 
-class Motor():
 
-    def __init__(self,x,y,d,motorid):
+class Motor(Element):
+    def __init__(self, surface, motorid, label):
+        super(Motor, self).__init__(surface, label)
 
-        pad = 10
         self.motorid = motorid
-
-        self.x = x + pad
-        self.y = y + pad
-        self.d = d - 2*pad
-        self.cy = y + self.d / 2
-        self.gap = self.d / 13
-        self.w = 2 * self.gap
-
-        self.rect = pygame.Rect( self.x,self.y,self.d,self.d )
         self.pid = [10, 20, -10, -20]
         self.tot = 20
+        self.gap = 0
+        self.ww = 0
 
-    def put(self,pid):
-        #print self.motorid,
-        #print pid
-        self.tot = 0
-        self.pid = []
-        for v in pid:
-            self.pid.append( v/1000 )
-            self.tot += v/1000
-        self.pid.append( self.tot )
 
-    def draw(self,surface):
+    def resize(self, x=None, y=None, w=None, h=None):
+        super(Motor, self).resize(x, y, w, h)
+
+        self.cy = y + h / 2
+        self.gap = self.w / 13.
+        self.ww = 2. * self.gap
+        self.scale = self.h / 100.
+
+    def draw(self):
+
+        if not self.set:
+            return
 
         x = self.x + self.gap
 
-        gfx.rectangle(surface, self.rect, white)
+        gfx.rectangle(self.surface, self.rect, white)
 
+        for t, v in zip('PIDT', Data.pid[self.motorid]):
+            ren = font.render(t, True, white)
+            self.surface.blit(ren, (x + self.ww / 2 - ren.get_width() / 2, self.cy - self.h / 4))
 
-        for t,v in zip('PIDT',self.pid):
-
-            ren = font.render(t,True,white)
-            surface.blit(ren,(x+self.w/2-ren.get_width()/2,self.cy - self.d/4))
-
-            rect = pygame.Rect( x, self.cy, self.w, 4 * v)
-            gfx.box( surface, rect,white )
-            x += self.w + self.gap
+            rect = pygame.Rect(x, self.cy, self.ww, self.scale * v)
+            gfx.box(self.surface, rect, white)
+            x += self.ww + self.gap
