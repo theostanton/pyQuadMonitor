@@ -16,7 +16,7 @@ gfx = pygame.gfxdraw
 import Frame
 import Graph
 import Motor
-import Dial
+import dial
 import RX
 import Timings
 
@@ -73,10 +73,10 @@ frames[1].add_element(Motor.Motor(window, "b", "B"))
 frames[1].add_element(Motor.Motor(window, "d", "D"))
 frames[1].add_element(Motor.Motor(window, "c", "C"))
 
-frames[2].add_element(Dial.Dial(window, 1, 'AGM', "Pitch Measured"))
-frames[2].add_element(Dial.Dial(window, 0, 'AGM', "Roll Measured"))
-frames[2].add_element(Dial.Dial(window, 1, 'MDE', "Pitch Control"))
-frames[2].add_element(Dial.Dial(window, 0, 'MDE', "Roll Control"))
+frames[2].add_element(dial.Dial(window, 1, 'AGM', "Pitch Measured"))
+frames[2].add_element(dial.Dial(window, 0, 'AGM', "Roll Measured"))
+frames[2].add_element(dial.Dial(window, 1, 'MDE', "Pitch Control"))
+frames[2].add_element(dial.Dial(window, 0, 'MDE', "Roll Control"))
 
 frames[3].add_element(RX.RX(window))
 
