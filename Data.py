@@ -1,5 +1,8 @@
 from collections import defaultdict
 
+# ##asdaa
+
+a = 3
 
 pid = {}
 pid['a'] = [0, 0, 0, 0]

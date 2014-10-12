@@ -26,11 +26,14 @@ import serial
 
 connected = False
 try:
+    print 'try'
+    #ser = serial.Serial('/dev/tty.Quad-DevB', 115200)
     # ser = serial.Serial('/dev/tty.Quad-DevB', 115200)
-    ser = serial.Serial('/dev/cu.usbmodem1a12451', 115200)
+    ser = serial.Serial('/dev/cu.usbmodem1d11441', 115200)
     print 'connected'
     connected = True
-except:
+except Exception as e:
+    print e.message
     print 'no connect'
 
 pygame.init()
@@ -176,6 +179,7 @@ def get_serial(line):
 
             if vals[0] in 'AGMDE':
                 # global angles
+                print 'AGMDE', vals
                 Data.set_angle(vals[0], map(int, vals[1:]))
                 #
                 # if len( logs[vals[0]] ) > 1024:
@@ -200,9 +204,10 @@ def get_serial(line):
                 print 'line', line,
     except Exception as e:
 
-        print 'serial error'
+        print 'serial error:',
+        print line
         print e.message
-        print 'serial error'
+
 
 
 def keydown(key):

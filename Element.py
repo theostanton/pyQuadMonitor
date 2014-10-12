@@ -15,6 +15,12 @@ IDLE = 0
 OVER = 1
 DRAG = 2
 
+# Transition states
+IDLE = 0
+GOOVER = 1
+GOIDLE = 2
+GODRAG = 3
+
 
 class Element(object):
 
@@ -41,6 +47,9 @@ class Element(object):
 
         self.interactives = []
         # self.interactives.append(Dropdown.DropDown(10, 10, 60, 25, surface, 'Label', ('One', 'Two', 'Three', 'Four')))
+
+        self.transition_diff = []  # (float, float, float) to be acced to current colour
+
 
     def resize(self, x=None, y=None, w=None, h=None):
 
@@ -101,4 +110,8 @@ class Element(object):
     def move_over(self, pos, rel):
         pass
 
+    def tick_transition(self):
+        pass
 
+    def start_transition(self):
+        pass

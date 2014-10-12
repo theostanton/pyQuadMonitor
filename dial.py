@@ -62,23 +62,23 @@ class Dial(Element):
 
             if angleid is 'M':
                 scale = 5
-                bars = [0, 0, 0, 0]
+                bars = {}
+                #
+                # if self.axisid is PITCH:
+                bars['a'] = Data.pid['a'][3] * 20
+                bars['b'] = Data.pid['b'][3] * 20
+                bars['c'] = Data.pid['c'][3] * 20
+                bars['d'] = Data.pid['d'][3] * 20
 
-                if self.axisid is PITCH:
-                    bars[0] = Data.pid['a'][3] * 10
-                    bars[1] = Data.pid['b'][3] * 10
-                    bars[2] = Data.pid['c'][3] * 10
-                    bars[3] = Data.pid['d'][3] * 10
+                # else:
+                #     bars[0] = Data.pid['a'][3] * 20
+                #     bars[1] = Data.pid['c'][3] * 20
+                #     bars[2] = Data.pid['b'][3] * 20
+                #     bars[3] = Data.pid['d'][3] * 20
 
-                else:
-                    bars[0] = Data.pid['a'][3] * 10
-                    bars[1] = Data.pid['c'][3] * 10
-                    bars[2] = Data.pid['b'][3] * 10
-                    bars[3] = Data.pid['d'][3] * 10
-
-                draw.line(self.surface, (255, 0, 0), (lx - 2, ly), ( lx - 2, ly + bars[0]), 2, )
-                draw.line(self.surface, (255, 0, 0), (lx + 2, ly), ( lx + 2, ly + bars[1]), 2, )
-                draw.line(self.surface, (255, 0, 0), (rx - 2, ry), ( rx - 2, ry + bars[2]), 2, )
-                draw.line(self.surface, (255, 0, 0), (rx + 2, ry), ( rx + 2, ry + bars[3]), 2, )
+                draw.line(self.surface, colors['a'], (lx - 2, ly), ( lx - 2, ly + bars['a']), 2, )
+                draw.line(self.surface, colors['b'], (lx + 2, ly), ( lx + 2, ly + bars['b']), 2, )
+                draw.line(self.surface, colors['c'], (rx - 2, ry), ( rx - 2, ry + bars['c']), 2, )
+                draw.line(self.surface, colors['d'], (rx + 2, ry), ( rx + 2, ry + bars['d']), 2, )
 
         gfx.aacircle(self.surface, cx, cy, self.r, white)

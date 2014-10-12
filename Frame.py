@@ -9,7 +9,15 @@ gfx = pygame.gfxdraw
 draw = pygame.gfxdraw
 
 pygame.init()
-font = pygame.font.Font(None, 20, bold=False)
+
+print 'fonts'
+
+# all_fonts = pygame.font.get_fonts()
+# for f in all_fonts:
+# print 'f',f
+
+font = pygame.font.SysFont(None, 20, bold=False)
+button_font = pygame.font.Font(None, 12, bold=False)
 
 # States
 IDLE = 0
@@ -78,8 +86,8 @@ class Frame():
         self.controls = Controls(surface)
         self.controls.add_button(Button(surface, SIZE))
         self.controls.add_button(Button(surface, FULL))
-        self.controls.add_button(Button(surface, KILL))
         self.controls.add_button(Button(surface, LOCK))
+        self.controls.add_button(Button(surface, KILL))
         self.controls.resize(self.rect.right, self.rect.bottom)
 
     def add_element(self, element=None):
@@ -355,6 +363,16 @@ class Button(Element):
 
         self.state = IDLE
 
+        self.letter = None
+        if id is SIZE:
+            self.letter = 'S'
+        elif id is FULL:
+            self.letter = 'F'
+        elif id is KILL:
+            self.letter = 'C'
+        elif id is LOCK:
+            self.letter = 'L'
+
         self.fill = {}
         self.fill[IDLE] = white_40
         self.fill[OVER] = white
@@ -364,7 +382,14 @@ class Button(Element):
         self.border[OVER] = red
 
     def draw(self):
+
+
         gfx.box(self.surface, self.rect, self.fill[self.state])
+
+        ren = button_font.render(self.letter, True, (200, 200, 200, 100))
+        self.surface.blit(ren, (self.rect.centerx - ren.get_width() / 2,
+                                self.rect.top + (self.rect.height - ren.get_height() ) ))
+
         gfx.rectangle(self.surface, self.rect, self.border[self.state])
 
     def press(self, pos):
