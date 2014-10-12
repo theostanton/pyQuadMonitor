@@ -1,6 +1,7 @@
 import pygame
 from pygame import gfxdraw
 
+import Data
 from colors import *
 
 
@@ -83,8 +84,10 @@ class Element(object):
         if not self.set:
             return
 
-        for interactive in self.interactives:
-            interactive.draw()
+        if self.state is OVER:
+            print self.label,'over'
+            for interactive in self.interactives:
+                interactive.draw()
 
         # gfx.box( self.surface, self.rect, self.fill[self.state] )
         # gfx.rectangle( self.surface, self.rect, self.border[self.state] )
@@ -108,7 +111,10 @@ class Element(object):
                 print interactive.get_choice(pos)
 
     def move_over(self, pos, rel):
-        pass
+        if self.rect.collidepoint(pos):
+            self.state = OVER
+        elif self.state is OVER:
+            self.state = IDLE
 
     def tick_transition(self):
         pass

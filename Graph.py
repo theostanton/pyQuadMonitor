@@ -2,16 +2,16 @@ import pygame
 from pygame import gfxdraw
 
 import Dropdown
-from Element import Element
+from Element import *
 from colors import *
 import Data
 
 
-gfx = pygame.gfxdraw
-draw = pygame.draw
+# gfx = pygame.gfxdraw
+# draw = pygame.draw
 
-pygame.init()
-font = pygame.font.Font(None, 20)
+# pygame.init()
+#font = pygame.font.Font(None, 20)
 
 
 class Graph(Element):
@@ -46,6 +46,8 @@ class Graph(Element):
 
         if not self.set:
             return
+
+        print self.label,self.state
 
         super(Graph, self).draw()
 

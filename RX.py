@@ -1,17 +1,6 @@
-import pygame
-from pygame import gfxdraw
+from Element import *
 
-from Element import Element
-from colors import *
-import Data
-
-
-gfx = pygame.gfxdraw
-draw = pygame.draw
-
-pygame.init()
-font = pygame.font.Font(None, 20)
-
+channels = ("Roll","Throttle","Pitch","Yaw","Aux 1", "Aux 2")
 
 class RX(Element):
     def __init__(self, surface):
@@ -20,7 +9,7 @@ class RX(Element):
     def draw(self):
         super(RX, self).draw()
 
-        x_scale = self.w / 20000.
+        x_scale = self.w / 12000.
         # print 'x_scale', x_scale
         dy = self.h / 6
 
@@ -28,7 +17,7 @@ class RX(Element):
         x = self.x
         prev = 0
 
-        for val in Data.rx:
+        for val,channel in zip(Data.rx,channels):
             ww = val * x_scale
             # print val,
             # print 'val', val,
@@ -37,7 +26,10 @@ class RX(Element):
             gfxdraw.box(self.surface, rect, (200, 200, 200))
 
             ren = font.render(str(val), True, white)
-            self.surface.blit(ren, (self.rect.right - ren.get_width(), y + ren.get_height() / 2))
+            self.surface.blit(ren, (self.rect.right - ren.get_width(), y + ( dy-ren.get_height() )/2  ))
+
+            ren = font.render(str(channel), True, white)
+            self.surface.blit(ren, (self.rect.left + 10, y + ( dy-ren.get_height() )/2))
 
             y += dy
             prev = val

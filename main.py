@@ -1,6 +1,8 @@
 import sys
+import Key
 
 import Slider
+import Status
 
 
 print sys.version
@@ -53,6 +55,7 @@ pygame.display.set_caption("Quad Monitor")
 window.fill(black)
 pygame.display.flip()
 
+# TODO should be a dict and amend iterators.
 frames = []
 frames.append(Frame.Frame(10, 10, 200, 200, window, label='1'))
 frames.append(Frame.Frame(15, 350, 350, 350, window, AR=Frame.FIXED_AR, label='2'))
@@ -60,11 +63,13 @@ frames.append(Frame.Frame(500, 250, 350, 350, window, AR=Frame.FIXED_AR, label='
 frames.append(Frame.Frame(200, 250, 350, 350, window, label='4'))
 frames.append(Frame.Frame(200, 100, 200, 200, window, label='5', layout=Frame.VERT))
 frames.append(Frame.Frame(300, 300, 200, 200, window, label='6', layout=Frame.VERT))
+frames.append(Frame.Frame(400, 300, 200, 200, window, label='7'))
+frames.append(Frame.Frame(400, 500, 200, 200, window, label='8'))
 
 frames[0].add_element(Graph.Graph(window, 0, 'MDE', "Roll"))
 frames[0].add_element(Graph.Graph(window, 1, 'MDE', "Pitch"))
-frames[0].add_element(Graph.Graph(window, 0, 'MAG', "Roll"))
-frames[0].add_element(Graph.Graph(window, 1, 'MAG', "Pitch"))
+frames[0].add_element(Graph.Graph(window, 0, 'AG', "Roll"))
+frames[0].add_element(Graph.Graph(window, 1, 'AG', "Pitch"))
 
 # frames[0].add_element(Graph.Graph(window, 0, 'M', "Roll Measured"))
 # frames[0].add_element(Graph.Graph(window, 0, 'AG', "Roll Gyro and Acc"))
@@ -76,8 +81,8 @@ frames[1].add_element(Motor.Motor(window, "b", "B"))
 frames[1].add_element(Motor.Motor(window, "d", "D"))
 frames[1].add_element(Motor.Motor(window, "c", "C"))
 
-frames[2].add_element(dial.Dial(window, 1, 'AGM', "Pitch Measured"))
-frames[2].add_element(dial.Dial(window, 0, 'AGM', "Roll Measured"))
+frames[2].add_element(dial.Dial(window, 1, 'AG', "Pitch Measured"))
+frames[2].add_element(dial.Dial(window, 0, 'AG', "Roll Measured"))
 frames[2].add_element(dial.Dial(window, 1, 'MDE', "Pitch Control"))
 frames[2].add_element(dial.Dial(window, 0, 'MDE', "Roll Control"))
 
@@ -89,6 +94,9 @@ frames[4].add_element(Slider.Slider(window, label="KD"))
 frames[4].add_element(Slider.Slider(window, label="Comp"))
 
 frames[5].add_element(Timings.Timings(window))
+
+frames[6].add_element(Key.Key(window))
+frames[7].add_element(Status.Status(window))
 
 
 def main():
@@ -179,7 +187,7 @@ def get_serial(line):
 
             if vals[0] in 'AGMDE':
                 # global angles
-                print 'AGMDE', vals
+                #print 'AGMDE', vals
                 Data.set_angle(vals[0], map(int, vals[1:]))
                 #
                 # if len( logs[vals[0]] ) > 1024:
