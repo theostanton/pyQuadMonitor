@@ -4,6 +4,12 @@ Quad_Monitor
 Displays live Quadcopter data. 
 Uses my FrameHandler. 
 
+Demo video here https://www.youtube.com/watch?v=5kVJoPb2f80
+Recorded with Quadcopter on table moved about with my hand. 
+
+![Alt text](http://i.imgur.com/2XP6qCS.png?raw=true "Screenshots")
+
+
 Communication to Quadcopter uses 3 byte packets in form :
 
       ID MSB LSB
