@@ -1,4 +1,4 @@
-Quad_Monitor
+pyQuadMonitor
 ============
 
 Displays live Quadcopter data. 
