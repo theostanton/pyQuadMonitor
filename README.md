@@ -3,6 +3,7 @@ Quad_Monitor
 
 Displays live Quadcopter data. 
 Uses my FrameHandler. 
+Totally unfinished. 
 
 Demo video here https://www.youtube.com/watch?v=5kVJoPb2f80
 Recorded with Quadcopter on table moved about with my hand. 
